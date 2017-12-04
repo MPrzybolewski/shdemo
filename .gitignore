@@ -15,6 +15,7 @@ syntax: glob
 .classpath
 .project
 .springBeans
+.idea
 
 
 # building

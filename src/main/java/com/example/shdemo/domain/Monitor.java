@@ -9,17 +9,23 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "car.unsold", query = "Select c from Car c where c.sold = false")
+		@NamedQuery(name = "monitor.available", query = "Select m from Monitor m where m.sold = false")
 })
-public class Car {
+public class Monitor {
 
 	private Long id;
-	private String make;
+	private Double diagonal;
 	private String model;
-	private Boolean sold = false;
+	private int frequency;
+	private boolean sold = false;
+
+	public Monitor() {
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+
+
 	public Long getId() {
 		return id;
 	}
@@ -28,12 +34,12 @@ public class Car {
 		this.id = id;
 	}
 
-	public String getMake() {
-		return make;
+	public Double getDiagonal() {
+		return diagonal;
 	}
 
-	public void setMake(String make) {
-		this.make = make;
+	public void setDiagonal(Double diagonal) {
+		this.diagonal = diagonal;
 	}
 
 	public String getModel() {
@@ -44,11 +50,19 @@ public class Car {
 		this.model = model;
 	}
 
-	public Boolean getSold() {
+	public int getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(int frequency) {
+		this.frequency = frequency;
+	}
+
+	public boolean isSold() {
 		return sold;
 	}
 
-	public void setSold(Boolean sold) {
+	public void setSold(boolean sold) {
 		this.sold = sold;
 	}
 }

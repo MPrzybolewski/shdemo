@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import com.example.shdemo.domain.Monitor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.shdemo.domain.Car;
 import com.example.shdemo.domain.Person;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,11 +30,15 @@ public class SellingManagerTest {
 	private final String NAME_2 = "Lolek";
 	private final String PIN_2 = "4321";
 
-	private final String MODEL_1 = "126p";
-	private final String MAKE_1 = "Fiat";
 
-	private final String MODEL_2 = "Mondeo";
-	private final String MAKE_2 = "Ford";
+	private final String MODEL_1 = "LG";
+	private final Double DIAGONAL_1 = 22.4;
+	private final int FREQUENCY_1= 60;
+
+	private final String MODEL_2 = "SAMSUNG";
+	private final Double DIAGONAL_2 = 24.65;
+	private final  int FREQUENCY_2 = 80;
+
 
 	@Test
 	public void addClientCheck() {
@@ -64,24 +68,26 @@ public class SellingManagerTest {
 	}
 
 	@Test
-	public void addCarCheck() {
+	public void addMonitorCheck() {
 
-		Car car = new Car();
-		car.setMake(MAKE_1);
-		car.setModel(MODEL_1);
+		Monitor monitor = new Monitor();
+		monitor.setFrequency(FREQUENCY_1);
+		monitor.setDiagonal(DIAGONAL_1);
+		monitor.setModel(MODEL_1);
 		// ... other properties here
 
-		Long carId = sellingManager.addNewCar(car);
+		Long monitorId = sellingManager.addNewMonitor(monitor);
 
-		Car retrievedCar = sellingManager.findCarById(carId);
-		assertEquals(MAKE_1, retrievedCar.getMake());
-		assertEquals(MODEL_1, retrievedCar.getModel());
+		Monitor retrievedMonitor = sellingManager.findMonitorById(monitorId);
+		assertEquals(DIAGONAL_1, retrievedMonitor.getDiagonal());
+		assertEquals(FREQUENCY_1, retrievedMonitor.getFrequency());
+		assertEquals(MODEL_1, retrievedMonitor.getModel());
 		// ... check other properties here
 
 	}
 
 	@Test
-	public void sellCarCheck() {
+	public void sellMonitorCheck() {
 
 		Person person = new Person();
 		person.setFirstName(NAME_2);
@@ -91,19 +97,21 @@ public class SellingManagerTest {
 
 		Person retrievedPerson = sellingManager.findClientByPin(PIN_2);
 
-		Car car = new Car();
-		car.setMake(MAKE_2);
-		car.setModel(MODEL_2);
+		Monitor monitor = new Monitor();
+		monitor.setDiagonal(DIAGONAL_2);
+		monitor.setFrequency(FREQUENCY_2);
+		monitor.setModel(MODEL_2);
 
-		Long carId = sellingManager.addNewCar(car);
+		Long monitorId = sellingManager.addNewMonitor(monitor);
 
-		sellingManager.sellCar(retrievedPerson.getId(), carId);
+		sellingManager.sellMonitor(retrievedPerson.getId(), monitorId);
 
-		List<Car> ownedCars = sellingManager.getOwnedCars(retrievedPerson);
+		List<Monitor> ownedMonitors = sellingManager.getOwnedMonitors(retrievedPerson);
 
-		assertEquals(1, ownedCars.size());
-		assertEquals(MAKE_2, ownedCars.get(0).getMake());
-		assertEquals(MODEL_2, ownedCars.get(0).getModel());
+		assertEquals(1, ownedMonitors.size());
+		assertEquals(FREQUENCY_2, ownedMonitors.get(0).getFrequency());
+		assertEquals(DIAGONAL_2, ownedMonitors.get(0).getDiagonal());
+		assertEquals(MODEL_2, ownedMonitors.get(0).getModel());
 	}
 
 	// @Test -

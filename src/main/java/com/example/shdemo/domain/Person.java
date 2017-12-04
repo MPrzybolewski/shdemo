@@ -24,13 +24,16 @@ import javax.persistence.TemporalType;
 })
 public class Person {
 
+	public Person() {
+	}
+
 	private Long id;
 
 	private String firstName = "unknown";
 	private String pin = "";
 	private Date registrationDate = new Date();
 
-	private List<Car> cars = new ArrayList<Car>();
+	private List<Monitor> monitors = new ArrayList<Monitor>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,10 +69,11 @@ public class Person {
 
 	// Be careful here, both with lazy and eager fetch type
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	public List<Car> getCars() {
-		return cars;
+	public List<Monitor> getMonitors() {
+		return monitors;
 	}
-	public void setCars(List<Car> cars) {
-		this.cars = cars;
+
+	public void setMonitors(List<Monitor> monitors) {
+		this.monitors = monitors;
 	}
 }
