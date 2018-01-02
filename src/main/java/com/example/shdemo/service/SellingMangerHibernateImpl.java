@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.shdemo.domain.Monitor;
+import jdk.internal.dynalink.MonomorphicCallSite;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -55,6 +56,14 @@ public class SellingMangerHibernateImpl implements SellingManager {
 	}
 
 	@Override
+	public Monitor getMonitorById(long id) {
+		Monitor monitor = (Monitor) sessionFactory.getCurrentSession().get(Monitor.class,
+				id);
+
+		return monitor;
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Person> getAllClients() {
 		return sessionFactory.getCurrentSession().getNamedQuery("person.all")
@@ -63,7 +72,9 @@ public class SellingMangerHibernateImpl implements SellingManager {
 
 	@Override
 	public Person findClientByPin(String pin) {
-		return (Person) sessionFactory.getCurrentSession().getNamedQuery("person.byPin").setString("pin", pin).uniqueResult();
+		 Person person = (Person) sessionFactory.getCurrentSession().getNamedQuery("person.byPin").setString("pin", pin).uniqueResult();
+		 return person;
+
 	}
 
 
@@ -80,6 +91,11 @@ public class SellingMangerHibernateImpl implements SellingManager {
 		Monitor monitor = (Monitor) sessionFactory.getCurrentSession()
 				.get(Monitor.class, carId);
 		monitor.setSold(true);
+		monitor.setPerson(person);
+		if(person.getMonitors() == null)
+		{
+			person.setMonitors(new ArrayList<Monitor>());
+		}
 		person.getMonitors().add(monitor);
 	}
 
@@ -89,6 +105,12 @@ public class SellingMangerHibernateImpl implements SellingManager {
 		return sessionFactory.getCurrentSession().getNamedQuery("monitor.available")
 				.list();
 	}
+
+	@Override
+	public void deleteMonitors() {
+		sessionFactory.getCurrentSession().createQuery("delete from Monitor").executeUpdate();
+	}
+
 	@Override
 	public void disposeMonitor(Person person, Monitor monitor) {
 

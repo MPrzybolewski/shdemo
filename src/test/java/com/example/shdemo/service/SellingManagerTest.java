@@ -1,10 +1,13 @@
 package com.example.shdemo.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.shdemo.domain.Monitor;
+import org.hibernate.Hibernate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ public class SellingManagerTest {
 
 	private final String NAME_1 = "Bolek";
 	private final String PIN_1 = "1234";
+	private final Double PRICE_1 = 123.44;
 
 	private final String NAME_2 = "Lolek";
 	private final String PIN_2 = "4321";
@@ -114,9 +118,29 @@ public class SellingManagerTest {
 		assertEquals(MODEL_2, ownedMonitors.get(0).getModel());
 	}
 
-	// @Test -
-	public void disposeCarCheck() {
-		// Do it yourself
+	@Test
+	public void checkBidirectional()
+	{
+		Person person = new Person();
+		person.setFirstName(NAME_2);
+		person.setPin(PIN_2);
+
+		sellingManager.addClient(person);
+
+		Monitor monitor = new Monitor();
+		monitor.setDiagonal(DIAGONAL_2);
+		monitor.setFrequency(FREQUENCY_2);
+		monitor.setModel(MODEL_2);
+
+		Long monitorId = sellingManager.addNewMonitor(monitor);
+
+		sellingManager.sellMonitor(person.getId(), monitorId);
+
+		Person monitorOwner = sellingManager.getMonitorById(monitorId).getPerson();
+
+		assertNotNull(monitorOwner);
+		assertEquals(NAME_2, monitorOwner.getFirstName());
+		assertEquals(PIN_2, monitorOwner.getPin());
 	}
 
 }

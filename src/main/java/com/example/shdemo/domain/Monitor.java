@@ -1,11 +1,6 @@
 package com.example.shdemo.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 @Entity
 @NamedQueries({
@@ -18,6 +13,7 @@ public class Monitor {
 	private String model;
 	private int frequency;
 	private boolean sold = false;
+	private Person person;
 
 	public Monitor() {
 	}
@@ -64,5 +60,16 @@ public class Monitor {
 
 	public void setSold(boolean sold) {
 		this.sold = sold;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(
+			name = "PERSON_ID")
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 }

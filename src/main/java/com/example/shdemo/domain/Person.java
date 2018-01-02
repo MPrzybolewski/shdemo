@@ -33,7 +33,7 @@ public class Person {
 	private String pin = "";
 	private Date registrationDate = new Date();
 
-	private List<Monitor> monitors = new ArrayList<Monitor>();
+	private List<Monitor> monitors;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,18 +59,11 @@ public class Person {
 		this.pin = pin;
 	}
 
-	@Temporal(TemporalType.DATE)
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
 
 	// Be careful here, both with lazy and eager fetch type
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
 	public List<Monitor> getMonitors() {
-		return monitors;
+			return monitors;
 	}
 
 	public void setMonitors(List<Monitor> monitors) {

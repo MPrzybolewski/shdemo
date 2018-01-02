@@ -20,4 +20,9 @@ public interface SellingManager {
 	List<Monitor> getOwnedMonitors(Person person);
 	void sellMonitor(Long personId, Long carId);
 
+	Monitor getMonitorById(long id);
+
+	void deleteMonitors();
+
+
 }
